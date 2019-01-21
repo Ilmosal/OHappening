@@ -1,12 +1,13 @@
 """
-Main function for starting the OHappening application. Run the start command to start the application.
+Main module for starting the OHappening application. Run the start function to start the application.
 
 FEATURE LIST
 ------------                        Started Done
 -Project initialization and basics  [X]     [ ]
--Working 352 day calendar           [ ]     [ ]
+-Working calendar                   [ ]     [ ]
 -Clock                              [ ]     [ ]
 -Various timers                     [ ]     [ ]
+-Syncing with google sheets         [ ]     [ ]
 -Syncing with google calendar       [ ]     [ ]
 -Admin UI and tools                 [ ]     [ ]
 
@@ -57,12 +58,11 @@ class OHappenWindow(QMainWindow):
         self.logger.addHandler(ch)
         self.logger.debug("Logger initialized") 
 
-def start():
+def start(debug = False):
     """
     Starting function for the application. Creates the QApplication and such.
+    Setting debug to True will enable debugging logs.
     """
-    debug = False
-
     if len(sys.argv) == 2 and sys.argv[1] == 'DEBUG':
         debug = True
 
