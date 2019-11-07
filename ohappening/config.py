@@ -19,7 +19,7 @@ ORGANIZATION_COLORS = {
     "merididi": getStylesheetGradientString(*[[47, 54, 181], [30, 36, 138], [7, 10, 74]]) + ";",
     "reso": getStylesheetGradientString(*[[255, 112, 203], [247, 59, 178], [212, 2, 135]]) + ";",
     "synop": getStylesheetGradientString(*[[253, 255, 148], [247, 250, 100], [219, 222, 38]]) + ";",
-    "geysir": getStylesheetGradientString(*[[107, 101, 100], [77, 72, 71], [59, 56, 55]]) + ";"
+    "NULL": getStylesheetGradientString(*[[107, 101, 100], [77, 72, 71], [59, 56, 55]]) + ";"
 }
 
 EVENT_HEADER_BORDERS_DARK = "border: 2px solid black; border-top-right-radius: 25px;" 
@@ -31,13 +31,13 @@ EVENT_DESCRIPTION_BORDERS = "border: 2px solid black;"
 EVENT_DESCRIPTION_LR_BORDERS = "border-left: 2px solid black; border-right: 2px solid black;"
 EVENT_DESCRIPTION_LRB_BORDERS = "border-left: 2px solid black; border-right: 2px solid black; border-bottom: 2px solid black;"
 
-MAX_WIDGET_AMOUT = 6
+MAX_WIDGET_AMOUT = 7
 
 ORGANIZATION_FONT_DARK = {
     "merididi": False,
     "reso": True,
     "synop": True,
-    "geysir": False
+    "NULL": False
 }
 
 CALENDAR_CONFIG_JSON = json.load(open(PROJECT_PATH + '/credentials/calendars.json', 'r'))

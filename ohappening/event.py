@@ -20,6 +20,9 @@ class Event():
         self.start_date = start_date
         self.end_date = end_date
 
+    def __str__(self):
+        return "Event: {0}, {1}, {2}, {4} - {5}\n{3}".format(self.name, self.adress, self.organizer, self.description, self.start_date, self.end_date)
+
 class EventWidget(QFrame):
     """
     Class for representing Event in a simple bar format
@@ -41,7 +44,10 @@ class EventWidget(QFrame):
         name_label.setFont(APPLICATION_FONT)
         name_label.setFixedWidth(1000)
 
-        date_label = QLabel("   " + event.start_date.strftime("%A %d.%m klo %H:%M").capitalize(), self)
+        if event.start_date.hour == 0 and event.start_date.minute == 0 and event.start_date.second == 0:
+            date_label = QLabel("   " + event.start_date.strftime("%A %d.%m").capitalize(), self)
+        else:
+            date_label = QLabel("   " + event.start_date.strftime("%A %d.%m klo %H:%M").capitalize(), self)
         date_label.setStyleSheet(EVENT_HEADER_DATE)
         date_label.setFont(APPLICATION_FONT)
 

@@ -8,7 +8,7 @@ FEATURE LIST
 -Clock                              [X]     [X]
 -Various timers                     [X]     [X]
 -Syncing with google calendar       [X]     [X]
--HSL widget                         [ ]     [ ]
+-HSL widget                         [X]     [ ]
 -Event timer Widget                 [ ]     [ ]
 
 Last updated: 11.02.2019, Ilmo Salmenperä

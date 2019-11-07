@@ -28,7 +28,8 @@ class CalendarManager():
 
         self.pickle_path = os.path.join(PROJECT_PATH, 'credentials/{0}.pickle'.format(self.credentials_name))
         self.credentials_path = os.path.join(PROJECT_PATH, 'credentials/{0}'.format(credentials_file))
-        self.calendar_ids = calendar_config['calendar_ids']
+        self.calendar_names = calendar_config['calendar_names']
+        self.calendar_ids = []
         self.working = False
 
         self.createConnection()
@@ -63,9 +64,20 @@ class CalendarManager():
 
             self.logger.info('Building calendar service')
             self.service = build('calendar', 'v3', credentials=creds)
+
+            self.logger.info("Fetching calendar ids")
+            calendar_id_results = self.service.calendarList().list().execute()
+
+            self.calendar_ids = []
+
+            for result in calendar_id_results.get('items', []):
+                self.logger.debug(result)
+                if result.get('summary') in self.calendar_names:
+                    self.calendar_ids.append(result.get('id'))
+
             self.working = True
 
-        except Exeption as e:
+        except Exception as e:
             self.logger.info("Exception occurred while building the calendar service {0}".format(self.credentials_name))
             self.logger.info("Exception: {0}".format(e))
             self.working = False
@@ -96,16 +108,27 @@ class CalendarManager():
 
                 for json_e in json_events:
                     self.logger.debug('Creating new event from json: \n{0}'.format(json_e))
+
+                    try:
+                        start_time = datetime.strptime(json_e['start'].get('dateTime', json_e['start'].get('date')).split('+')[0], '%Y-%m-%dT%H:%M:%S')
+                    except:
+                        start_time = datetime.strptime(json_e['start'].get('dateTime', json_e['start'].get('date')).split('+')[0], '%Y-%m-%d')
+
+                    try:
+                        end_time = datetime.strptime(json_e['end'].get('dateTime', json_e['end'].get('date')).split('+')[0], '%Y-%m-%dT%H:%M:%S')
+                    except:
+                        end_time = datetime.strptime(json_e['end'].get('dateTime', json_e['end'].get('date')).split('+')[0], '%Y-%m-%d')
+
                     events.append(Event(
                         json_e.get('summary'),
                         json_e.get('location'),
                         self.credentials_name,
                         json_e.get('description'),
-                        datetime.strptime(json_e['start'].get('dateTime', json_e['start'].get('date')).split('+')[0], '%Y-%m-%dT%H:%M:%S'),
-                        datetime.strptime(json_e['end'].get('dateTime', json_e['end'].get('date')).split('+')[0], '%Y-%m-%dT%H:%M:%S')
+                        start_time,
+                        end_time
                         ))
 
-        except Exeption as e:
+        except Exception as e:
             self.logger.info("Exception occurred while fetching events {0}".format(self.credentials_name))
             self.logger.info("Exception: {0}".format(e))
             self.working = False

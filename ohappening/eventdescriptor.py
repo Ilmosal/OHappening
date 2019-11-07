@@ -65,13 +65,25 @@ class EventDescriptorWidget(QFrame):
 
         event = self.parent().event_list_widget.getEventDescription()
 
+        if event is None:
+            self.event_name.setStyleSheet(ORGANIZATION_COLORS["NULL"] + EVENT_DESCRIPTION_BORDERS)
+            self.event_name.setText(self.event_name_text.format(""))
+            self.event_date.setText(self.event_date_text.format(""))
+            self.event_adress.setText(self.event_adress_text.format(""))
+            self.event_description.setText("")
+            return
+
         if not ORGANIZATION_FONT_DARK[event.organizer]:
             self.event_name.setStyleSheet(ORGANIZATION_COLORS[event.organizer] + EVENT_DESCRIPTION_BORDERS + "color: white")
         else:
             self.event_name.setStyleSheet(ORGANIZATION_COLORS[event.organizer] + EVENT_DESCRIPTION_BORDERS)
 
         self.event_name.setText(self.event_name_text.format(event.name))
-        self.event_date.setText(self.event_date_text.format(event.start_date))
+
+        if event.start_date.hour == 0 and event.start_date.minute == 0 and event.start_date.second == 0:
+            self.event_date.setText(self.event_date_text.format(event.start_date.strftime("%A %d.%m")))
+        else:
+            self.event_date.setText(self.event_date_text.format(event.start_date.strftime("%A %d.%m klo %H:%M")))
         self.event_adress.setText(self.event_adress_text.format(event.adress))
         self.event_description.setText(event.description)
 

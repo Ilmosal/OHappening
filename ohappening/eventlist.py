@@ -28,6 +28,9 @@ class EventListWidget(QFrame):
         self.clearChildren()
         self.events = events
 
+        for e in self.events:
+            self.logger.debug(e)
+
         self.events.sort(key = lambda x: x.start_date)
 
         counter = 0
@@ -53,6 +56,9 @@ class EventListWidget(QFrame):
         """
         Function for getting a single event for the event description. This event will be one of the first 5 events
         """
+        if len(self.events) <= self.event_counter:
+            return None
+
         event = self.events[self.event_counter]
         self.event_counter = (self.event_counter + 1) % MAX_WIDGET_AMOUT
         return event
